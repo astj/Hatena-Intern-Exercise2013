@@ -24,7 +24,7 @@ sub parse {
 #        foreach(@SplittedLine) { if($_ =~ /^(.+?):(.+)$/ && $2 ne '-') { $ParamsHash->{$1} = $2; } }
 
         # Skipすべきデータ <=> "値が-である" 
-        # Slipするべき要素をgrepで弾いて残りをmapしてるけど同じ正規表現2回ってどうも知性が足りないような……
+        # Skipするべき要素をgrepで弾いて残りをmapしてるけど同じ正規表現2回ってどうも知性が足りないような……
         my $ParamsHash = { map { $_ =~ /^(.+?):(.+)$/ && $1=>$2;} grep { $_ =~ /^(.+?):(.+)$/ && $2 ne '-'} @SplittedLine };
 
         push @$ResultArray, Log->new(%$ParamsHash);
