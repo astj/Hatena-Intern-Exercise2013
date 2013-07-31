@@ -2,6 +2,8 @@ package Log;
 use strict;
 use warnings;
 
+use DateTime;
+
 sub new {
     my ($class, %args) = @_;
     return bless \%args, $class;
@@ -44,11 +46,17 @@ sub uri {
 sub time {
     my $self = shift;
 
-    # ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)
-    my ($sec,$min,$hour,$mday,$mon,$year) = gmtime $self->{epoch};
+#    # Old-Good-Style, I prefer this ;-)
+#    # ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)
+#    my ($sec,$min,$hour,$mday,$mon,$year) = gmtime $self->{epoch};
+#
+#    # YYYY-MM-DDThh:mm:ss
+#    return sprintf("%04d-%02d-%02dT%02d:%02d:%02d",$year+1900,$mon+1,$mday,$hour,$min,$sec);
 
-    # YYYY-MM-DDThh:mm:ss
-    return sprintf("%04d-%02d-%02dT%02d:%02d:%02d",$year+1900,$mon+1,$mday,$hour,$min,$sec);
+    # Using DateTime looks cool...
+    my $dt = DateTime->from_epoch( epoch => $self->{epoch} ); # Default timezone is GMT
+    return $dt->ymd.'T'.$dt->hms;
+
 }
 
 sub _split_req {
