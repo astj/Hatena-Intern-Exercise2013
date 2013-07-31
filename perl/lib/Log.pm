@@ -55,7 +55,7 @@ sub time {
 
     # Using DateTime looks cool...
     my $dt = DateTime->from_epoch( epoch => $self->{epoch} ); # Default timezone is GMT
-    return $dt->ymd.'T'.$dt->hms;
+    return $dt->strftime('%Y-%m-%dT%H:%M:%S');
 
 }
 
