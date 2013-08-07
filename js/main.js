@@ -18,33 +18,21 @@ function parseLTSVLog(GivenLTSVString) {
 }
 // 課題 JS-2: 関数 `createLogTable` を記述してください
 function createLogTable(containerElem, LTSVArray) {
-    // 流石に冗長すぎる気がする……
+
+    // table本体
     var RTable = document.createElement('table');
     // theadをつくる
-    var RThead = document.createElement('thead');
-        var RTheadTr = document.createElement('tr');
-        var RTheadTrTh1 = document.createElement('th');
-            RTheadTrTh1.appendChild(document.createTextNode('path'));
-            RTheadTr.appendChild(RTheadTrTh1);
-        var RTheadTrTh2 = document.createElement('th');
-            RTheadTrTh2.appendChild(document.createTextNode('reqtime_microsec'));
-            RTheadTr.appendChild(RTheadTrTh2);
-    RThead.appendChild(RTheadTr);
+    var RThead = RTable.appendChild(document.createElement('thead'));
+        var RTheadTr = RThead.appendChild(document.createElement('tr'));
+            RTheadTr.appendChild(document.createElement('th')).appendChild(document.createTextNode('path'));
+            RTheadTr.appendChild(document.createElement('th')).appendChild(document.createTextNode('reqtime_microsec'));
     // tbodyをつくる(本丸)
-    var RTbody = document.createElement('tbody');
+    var RTbody = RTable.appendChild(document.createElement('tbody'));
     for(var i=0 ; i < LTSVArray.length; i++) {
-        var RTbodyTr = document.createElement('tr');
-        var RTbodyTrTd1 = document.createElement('td');
-            RTbodyTrTd1.appendChild(document.createTextNode(LTSVArray[i]['path']));
-        RTbodyTr.appendChild(RTbodyTrTd1);
-        var RTbodyTrTd2 = document.createElement('td');
-            RTbodyTrTd2.appendChild(document.createTextNode(LTSVArray[i]['reqtime_microsec']));
-        RTbodyTr.appendChild(RTbodyTrTd2);
-        RTbody.appendChild(RTbodyTr);
+        var RTbodyTr = RTbody.appendChild(document.createElement('tr'));
+            RTbodyTr.appendChild(document.createElement('td')).appendChild(document.createTextNode(LTSVArray[i]['path']));
+            RTbodyTr.appendChild(document.createElement('td')).appendChild(document.createTextNode(LTSVArray[i]['reqtime_microsec']));
     }
-    // tableとして形成する
-    RTable.appendChild(RThead);
-    RTable.appendChild(RTbody);
     //与えられたcontainerに突っ込んで完成
     containerElem.appendChild(RTable);
 }
