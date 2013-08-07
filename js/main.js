@@ -1,7 +1,7 @@
 // 課題 JS-1: 関数 `parseLTSVLog` を記述してください
 function parseLTSVLog(GivenLTSVString) {
 	var GivenLTSVArray = GivenLTSVString.split("\n");
-    GivenLTSVArray.pop();//\nで終わることが保証されてるからsplitすると空がケツにできる
+    GivenLTSVArray.pop();//\nで終わることが保証されてるからsplitすると最終要素はいらない
 	var ReturnArray = [];
 	for(var i = 0; i < GivenLTSVArray.length; i++){
 		var OneLineArray = GivenLTSVArray[i].split("\t");
@@ -45,6 +45,6 @@ function createLogTable(containerElem, LTSVArray) {
     // tableとして形成する
     RTable.appendChild(RThead);
     RTable.appendChild(RTbody);
-    //与えられたcontainedに突っ込んで完成
+    //与えられたcontainerに突っ込んで完成
     containerElem.appendChild(RTable);
 }
