@@ -23,7 +23,8 @@ sub group_by_user {
 sub count_error {
     my $self = shift;
 
-    return scalar grep {$_->{status} > 499 && $_->{status} < 600} @{ $self->{logs} };
+    # (499,600)よりは[500,599]の方が妥当かな
+    return scalar grep {$_->{status} >= 500 && $_->{status} <= 599} @{ $self->{logs} };
 }
 
 1;

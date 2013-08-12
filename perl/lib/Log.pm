@@ -25,20 +25,24 @@ sub path {
 
 sub uri {
     my $self = shift;
-    my $req = $self->_split_req;
 
-#URI is constructed from (1)Protocol, (2)Host, (3)Path
+# On-demand生成のやつ
 
-    #(1) Protocol 'HTTP/1.0' -> 'http'
-    my $protocol = lc([split('/',$req->[2])]->[0]);
+#    my $req = $self->_split_req;
+#
+##URI is constructed from (1)Protocol, (2)Host, (3)Path
+#
+#    #(1) Protocol 'HTTP/1.0' -> 'http'
+#    my $protocol = lc([split('/',$req->[2])]->[0]);
+#
+#    #(2) Host
+#    my $host = $self->{host};
+#
+#    #(3) Path
+#    my $path = $req->[1];
 
-    #(2) Host
-    my $host = $self->{host};
-
-    #(3) Path
-    my $path = $req->[1];
-
-    return $protocol.'://'.$host.$path;
+    # Cacheする感じで。
+    return $self->{_composed_uri} //= do { lc([split('/',$self->protocol)]->[0]).'://'.$self->{host}.$self->path; };
 
 }
 
@@ -65,7 +69,7 @@ sub _split_req {
     my $self = shift;
 
     # ['GET', '/apache_pb.gif', 'HTTP/1.0']
-    return [split(' ',$self->{req})];
+    return $self->{_splitted_req} //= do { [split(' ',$self->{req})] };
 }
 
 1;

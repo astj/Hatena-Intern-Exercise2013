@@ -19,13 +19,15 @@ sub parse {
         chomp $line;
         my @SplittedLine = split("\t",$line);
 
+        # 正規表現を変えた: /^(.+?):(.+)$/ -> /^(.+?):(.*)$/
+
 #        # 半古典的手法
 #        my $ParamsHash = {};
-#        foreach(@SplittedLine) { if($_ =~ /^(.+?):(.+)$/ && $2 ne '-') { $ParamsHash->{$1} = $2; } }
+#        foreach(@SplittedLine) { if($_ =~ /^(.+?):(.*)$/ && $2 ne '-') { $ParamsHash->{$1} = $2; } }
 
         # Skipすべきデータ <=> "値が-である" 
-        # Skipするべき要素をgrepで弾いて残りをmapしてるけど同じ正規表現2回ってどうも知性が足りないような……
-        my $ParamsHash = { map { $_ =~ /^(.+?):(.+)$/ && $1=>$2;} grep { $_ =~ /^(.+?):(.+)$/ && $2 ne '-'} @SplittedLine };
+        # Follow-Upを踏まえてmap使うコードに
+        my $ParamsHash = { map { ($_ =~ /^(.+?):(.*)$/ && $2 ne '-') ? ($1=>$2) : ()} @SplittedLine };
 
         push @$ResultArray, Log->new(%$ParamsHash);
     }
