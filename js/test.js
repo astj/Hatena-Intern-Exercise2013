@@ -34,6 +34,21 @@ QUnit.test("`parseLTSVLog` 関数の動作確認", function () {
     // テストを追加する場合は、この下に追加しても構いませんし、
     // `QUnit.test` 関数や `QUnit.asyncTest` 関数を用いて別に定義しても良いです。
 
+    // 追加テスト: FollowUpで取り上げられてたことを中心に……
+
+    logStr = "path:\treqtime_microsec:500000\n";
+    logRecords = parseLTSVLog(logStr);
+    QUnit.deepEqual(logRecords, [
+        { path: "", reqtime_microsec: 500000 }
+    ], "Additional: 値が空のデータを含むログデータが期待通りパースされる");
+
+    logStr = "path:/hoge:hoge\treqtime_microsec:500000\n";
+    logRecords = parseLTSVLog(logStr);
+    QUnit.deepEqual(logRecords, [
+        { path: "/hoge:hoge", reqtime_microsec: 500000 }
+    ], "Additional: 値にコロンを含むログデータが期待通りパースされる");
+
+
 });
 
 QUnit.module("課題 JS-2");
